@@ -1,4 +1,18 @@
-provider "aws" {}
+provider "aws" {
+  region = "us-west-2"
+
+  default_tags {
+    tags = local.default_tags
+  }
+}
+
+locals {
+  default_tags = {
+    environment = "dev"
+    managed-by  = "terraform"
+    project     = "platform"
+  }
+}
 
 module "workloads_deployer_iam_policy" {
   source = "../../modules/ci-iam-policy"
@@ -14,4 +28,6 @@ module "oidc_github" {
   iam_role_inline_policies = {
     eks = module.workloads_deployer_iam_policy.policy_document.json
   }
+
+  tags = local.default_tags
 }
