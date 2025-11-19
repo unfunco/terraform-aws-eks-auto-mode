@@ -15,7 +15,7 @@ on:
 jobs:
   verify:
     name: Verify
-    runs-on: ubuntu-24.04 [Beta]
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
@@ -36,7 +36,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - name: Prepare a release
       uses: googleapis/release-please-action@v4
