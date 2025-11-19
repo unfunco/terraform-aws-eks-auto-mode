@@ -1,9 +1,7 @@
-# Terraform module
+# Terraform module for Amazon EKS Auto Mode
 
-[![CI](https://github.com/unfunco/template-terraform-module/actions/workflows/ci.yaml/badge.svg)](https://github.com/unfunco/template-terraform-module/actions/workflows/ci.yaml)
+[![CI](https://github.com/unfunco/terraform-aws-eks-auto-mode/actions/workflows/ci.yaml/badge.svg)](https://github.com/unfunco/terraform-aws-eks-auto-mode/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE.md)
-
-A template for creating a Terraform module repository.
 
 ## Getting started
 
@@ -14,8 +12,8 @@ A template for creating a Terraform module repository.
 ### Installation and usage
 
 ```terraform
-module "example" {
-  source  = "unfunco/module-name/aws"
+module "workloads" {
+  source  = "unfunco/eks-auto-mode/aws"
   version = "0.0.0" // x-release-please-version
 
   // ...

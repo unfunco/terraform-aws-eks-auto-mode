@@ -15,7 +15,7 @@ on:
 jobs:
   verify:
     name: Verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 [Beta]
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
@@ -32,7 +32,6 @@ jobs:
 
   release:
     name: Release?
-    if: github.repository != 'unfunco/template-terraform-module'
     needs: [ verify ]
     permissions:
       contents: write
