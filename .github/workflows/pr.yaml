@@ -1,0 +1,29 @@
+name: PR
+
+on:
+  pull_request:
+    paths-ignore:
+    - .editorconfig
+    - .gitattributes
+    - .gitignore
+    - CHANGELOG.md
+    - LICENSE.md
+    - README.md
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.13.5
+    - name: Initialise with no backend
+      run: terraform init -backend=false
+    - name: Check formatting
+      run: terraform fmt -check -recursive
+    - name: Validate configuration
+      run: terraform validate
