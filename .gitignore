@@ -11,6 +11,7 @@ Thumbs.db
 *_override.tf
 *_override.tf.json
 .terraform.d/
+.terraform.lock.hcl
 .terraform.tfstate.lock.info
 .terraform/
 .terraformrc
