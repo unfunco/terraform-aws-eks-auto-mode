@@ -29,15 +29,59 @@ module "workloads" {
 aws eks update-kubeconfig --name workloads
 ```
 
+This is what the cluster looks like once created:
+
 ```bash
+$ kubectl get ns
+NAME              STATUS   AGE
+default           Active   6m4s
+kube-node-lease   Active   6m4s
+kube-public       Active   6m4s
+kube-system       Active   6m4s
+
 $ kubectl get all -A
 
 NAMESPACE     NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
 default       service/kubernetes                  ClusterIP   172.20.0.1       <none>        443/TCP   9m15s
 kube-system   service/eks-extension-metrics-api   ClusterIP   172.20.164.128   <none>        443/TCP   9m14s
+
+$ kubectl get cm -A
+NAMESPACE         NAME                                                   DATA   AGE
+default           kube-root-ca.crt                                       1      9m25s
+kube-node-lease   kube-root-ca.crt                                       1      9m25s
+kube-public       kube-root-ca.crt                                       1      9m25s
+kube-system       extension-apiserver-authentication                     6      9m38s
+kube-system       kube-apiserver-legacy-service-account-token-tracking   1      9m38s
+kube-system       kube-root-ca.crt                                       1      9m25s
+```
+
+#### IAM role for CI/CD pipelines
+
+A submodule is provided that creates an IAM policy for CI/CD pipelines that
+need to deploy and manage the EKS clusters. This policy can be attached to an
+IAM role created by another module, such as [unfunco/oidc-github], for example:
+
+```terraform
+module "eks_deployer_iam_policy" {
+  source  = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
+  version = "0.0.0" // x-release-please-version
+
+  cluster_name = "workloads"
+}
+
+module "oidc_github" {
+  source  = "unfunco/oidc-github/aws"
+  version = "2.0.2"
+
+  github_repositories = ["unfunco/example"]
+  iam_role_inline_policies = {
+    eks = module.eks_deployer_iam_policy.policy_document.json
+  }
+}
 ```
 
 <!-- BEGIN_TF_DOCS -->
+
 ### Resources
 
 | Name                                                                                                                                             | Type        |
@@ -97,3 +141,4 @@ Made available under the terms of the [MIT License].
 [release please]: https://github.com/googleapis/release-please
 [terraform]: https://www.terraform.io
 [terraform aws provider]: https://registry.terraform.io/providers/hashicorp/aws
+[unfunco/oidc-github]: https://registry.terraform.io/modules/unfunco/oidc-github/aws/latest
