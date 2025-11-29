@@ -1,4 +1,8 @@
-provider "aws" {}
+provider "aws" {
+  default_tags {
+    tags = { example = true }
+  }
+}
 
 module "network" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -16,6 +20,7 @@ module "network" {
 module "workloads" {
   source = "../.."
 
-  cluster_name = "workloads"
-  subnet_ids   = module.network.private_subnets
+  cluster_name  = "workloads"
+  force_destroy = true
+  subnet_ids    = module.network.private_subnets
 }

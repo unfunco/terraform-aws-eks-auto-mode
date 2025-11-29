@@ -5,13 +5,13 @@ variable "cluster_log_types" {
 }
 
 variable "cluster_name" {
-  description = "Cluster name."
+  description = "Kubernetes cluster name."
   type        = string
 }
 
 variable "cluster_version" {
   default     = "1.34"
-  description = "Cluster version."
+  description = "Kubernetes cluster version."
   type        = string
 }
 
