@@ -10,10 +10,15 @@ using [Amazon EKS Auto Mode].
 
 ### Requirements
 
+- [AWS Command Line Interface] 2+
 - [Terraform] 1.13+
 - [Terraform AWS provider] 6.0+
 
 ### Installation and usage
+
+The `x-release-please-version` comments in the examples can be ignored; they are
+used by [Release Please] to automatically update the version numbers when
+releasing new versions.
 
 ```terraform
 module "workloads" {
@@ -55,6 +60,47 @@ kube-system       kube-apiserver-legacy-service-account-token-tracking   1      
 kube-system       kube-root-ca.crt                                       1      9m25s
 ```
 
+#### Custom node classes
+
+```terraform
+module "workloads" {
+  source  = "unfunco/eks-auto-mode/aws"
+  version = "0.0.0" // x-release-please-version
+
+  cluster_name = "workloads"
+  subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
+}
+
+module "custom_node_class" {
+  source  = "unfunco/eks-auto-mode/aws//modules/node-class"
+  version = "0.0.0" // x-release-please-version
+
+  cluster_name = module.workloads.cluster_name
+  name         = "custom-node-class"
+  role         = module.workloads.node_role_arn
+
+  subnet_selector_terms = [
+    {
+      tags = {
+        "kubernetes.io/role/internal-elb" = "1"
+      }
+    }
+  ]
+
+  security_group_selector_terms = [
+    {
+      tags = {
+        "aws:eks:cluster-name" = module.workloads.cluster_name
+      }
+    }
+  ]
+
+  ephemeral_storage = {
+    size = "100Gi"
+  }
+}
+```
+
 #### IAM role for CI/CD pipelines
 
 A submodule is provided that creates an IAM policy for CI/CD pipelines that
@@ -63,7 +109,7 @@ IAM role created by another module, such as [unfunco/oidc-github], for example:
 
 ```terraform
 module "eks_deployer_iam_policy" {
-  source  = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
+  source = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
   version = "0.0.0" // x-release-please-version
 
   cluster_name = "workloads"
@@ -85,7 +131,7 @@ module "oidc_github" {
 ### Resources
 
 | Name                                                                                                                                             | Type        |
-|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
 | [aws_cloudwatch_log_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group)                | resource    |
 | [aws_eks_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster)                                  | resource    |
 | [aws_iam_role.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                     | resource    |
@@ -100,26 +146,30 @@ module "oidc_github" {
 
 ### Inputs
 
-| Name                      | Description                                         | Type           | Default                                                                     | Required |
-|---------------------------|-----------------------------------------------------|----------------|-----------------------------------------------------------------------------|:--------:|
-| cluster\_log\_types       | Control plane logging types to enable.              | `list(string)` | ```[ "api", "audit", "authenticator", "controllerManager", "scheduler" ]``` |    no    |
-| cluster\_name             | Cluster name.                                       | `string`       | n/a                                                                         |   yes    |
-| cluster\_version          | Cluster version.                                    | `string`       | `"1.34"`                                                                    |    no    |
-| create                    | Enable/disable the creation of all resources.       | `bool`         | `true`                                                                      |    no    |
-| force\_destroy            | Force destroy resources.                            | `bool`         | `false`                                                                     |    no    |
-| kms\_key\_arn             | n/a                                                 | `string`       | `null`                                                                      |    no    |
-| kms\_key\_arn\_cluster    | ARN of the KMS key to use cluster encryption.       | `string`       | `null`                                                                      |    no    |
-| kms\_key\_arn\_log\_group | ARN of the KMS key to use for log group encryption. | `string`       | `null`                                                                      |    no    |
-| log\_group\_class         | Log group storage class.                            | `string`       | `"STANDARD"`                                                                |    no    |
-| log\_retention\_in\_days  | Days to retain logs in CloudWatch Logs.             | `number`       | `365`                                                                       |    no    |
-| subnet\_ids               | Subnet IDs for the EKS cluster.                     | `list(string)` | n/a                                                                         |   yes    |
-| tags                      | Tags to be applied to all applicable resources.     | `map(string)`  | `{}`                                                                        |    no    |
+| Name                  | Description                                         | Type           | Default                                                                 | Required |
+| --------------------- | --------------------------------------------------- | -------------- | ----------------------------------------------------------------------- | :------: |
+| cluster_log_types     | Control plane logging types to enable.              | `list(string)` | `[ "api", "audit", "authenticator", "controllerManager", "scheduler" ]` |    no    |
+| cluster_name          | Kubernetes cluster name.                            | `string`       | n/a                                                                     |   yes    |
+| cluster_version       | Kubernetes cluster version.                         | `string`       | `"1.34"`                                                                |    no    |
+| create                | Enable/disable the creation of all resources.       | `bool`         | `true`                                                                  |    no    |
+| force_destroy         | Force destroy resources.                            | `bool`         | `false`                                                                 |    no    |
+| kms_key_arn           | n/a                                                 | `string`       | `null`                                                                  |    no    |
+| kms_key_arn_cluster   | ARN of the KMS key to use cluster encryption.       | `string`       | `null`                                                                  |    no    |
+| kms_key_arn_log_group | ARN of the KMS key to use for log group encryption. | `string`       | `null`                                                                  |    no    |
+| log_group_class       | Log group storage class.                            | `string`       | `"STANDARD"`                                                            |    no    |
+| log_retention_in_days | Days to retain logs in CloudWatch Logs.             | `number`       | `365`                                                                   |    no    |
+| subnet_ids            | Subnet IDs for the EKS cluster.                     | `list(string)` | n/a                                                                     |   yes    |
+| tags                  | Tags to be applied to all applicable resources.     | `map(string)`  | `{}`                                                                    |    no    |
 
 ### Outputs
 
-| Name         | Description             |
-|--------------|-------------------------|
-| cluster\_arn | ARN of the EKS cluster. |
+| Name             | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| cluster_arn      | ARN of the EKS cluster.                              |
+| cluster_name     | Name of the EKS cluster.                             |
+| cluster_role_arn | ARN of the IAM role associated with the EKS cluster. |
+| node_role_arn    | ARN of the IAM role associated with the EKS nodes.   |
+
 <!-- END_TF_DOCS -->
 
 ### Releases
@@ -135,6 +185,7 @@ pull request is merged, a new release will be created.
 Made available under the terms of the [MIT License].
 
 [amazon eks auto mode]: https://aws.amazon.com/eks/auto-mode/
+[aws command line interface]: https://aws.amazon.com/cli/
 [conventional commit]: https://www.conventionalcommits.org
 [daniel morris]: https://unfun.co
 [mit license]: LICENSE.md

@@ -8,6 +8,9 @@ output:
     {{ .Content }}
     <!-- END_TF_DOCS -->
 
+recursive:
+  enabled: true
+
 sections:
   hide: [ modules, providers, requirements ]
 
