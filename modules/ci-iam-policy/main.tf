@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
+// SPDX-License-Identifier: MIT
+
 locals {
   cluster_arn = format(
     "arn:%s:eks:%s:%s:cluster/%s",

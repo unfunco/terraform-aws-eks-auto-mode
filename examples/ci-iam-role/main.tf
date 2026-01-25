@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
+// SPDX-License-Identifier: MIT
+
 provider "aws" {}
 
 module "workloads_deployer_iam_policy" {
