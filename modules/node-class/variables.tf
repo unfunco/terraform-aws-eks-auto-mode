@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
+// SPDX-License-Identifier: MIT
+
 variable "advanced_networking" {
   default     = null
   description = "Advanced networking configuration."

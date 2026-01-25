@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
+// SPDX-License-Identifier: MIT
+
 locals {
   default_cluster_role_policy_attachments = [
     "AmazonEKSBlockStoragePolicy",
