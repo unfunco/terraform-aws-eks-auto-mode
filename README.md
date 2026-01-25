@@ -22,7 +22,7 @@ using [Amazon EKS Auto Mode].
 ```terraform
 module "workloads" {
   source  = "unfunco/eks-auto-mode/aws"
-  version = "0.0.0" // x-release-please-version
+  version = "0.0.0"
 
   cluster_name = "workloads"
   subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
@@ -68,7 +68,7 @@ kube-system       kube-root-ca.crt                                       1      
 ```terraform
 module "workloads" {
   source  = "unfunco/eks-auto-mode/aws"
-  version = "0.0.0" // x-release-please-version
+  version = "0.0.0"
 
   cluster_name = "workloads"
   subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
@@ -76,7 +76,7 @@ module "workloads" {
 
 module "custom_node_class" {
   source  = "unfunco/eks-auto-mode/aws//modules/node-class"
-  version = "0.0.0" // x-release-please-version
+  version = "0.0.0"
 
   cluster_name = module.workloads.cluster_name
   name         = "custom-node-class"
@@ -117,11 +117,15 @@ IAM role created by another module, such as [unfunco/oidc-github], for example:
 ```terraform
 module "eks_deployer_iam_policy" {
   source = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
-  version = "0.0.0" // x-release-please-version
+  version = "0.0.0"
 
   cluster_name = "workloads"
 }
+```
 
+<!-- x-release-please-end -->
+
+```terraform
 module "oidc_github" {
   source  = "unfunco/oidc-github/aws"
   version = "2.0.2"
@@ -132,8 +136,6 @@ module "oidc_github" {
   }
 }
 ```
-
-<!-- x-release-please-end -->
 
 <!-- BEGIN_TF_DOCS -->
 
