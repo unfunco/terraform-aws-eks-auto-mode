@@ -1,6 +1,7 @@
 # Terraform module for Amazon EKS Auto Mode
 
 [![CI](https://github.com/unfunco/terraform-aws-eks-auto-mode/actions/workflows/ci.yaml/badge.svg)](https://github.com/unfunco/terraform-aws-eks-auto-mode/actions/workflows/ci.yaml)
+[![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-unfunco%2Feks--auto--mode-blue?logo=terraform)](https://registry.terraform.io/modules/unfunco/eks-auto-mode/aws)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE.md)
 
 Terraform module for provisioning Kubernetes clusters
@@ -16,9 +17,7 @@ using [Amazon EKS Auto Mode].
 
 ### Installation and usage
 
-The `x-release-please-version` comments in the examples can be ignored; they are
-used by [Release Please] to automatically update the version numbers when
-releasing new versions.
+<!-- x-release-please-start-version -->
 
 ```terraform
 module "workloads" {
@@ -29,6 +28,8 @@ module "workloads" {
   subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
 }
 ```
+
+<!-- x-release-please-end -->
 
 ```bash
 aws eks update-kubeconfig --name workloads
@@ -61,6 +62,8 @@ kube-system       kube-root-ca.crt                                       1      
 ```
 
 #### Custom node classes
+
+<!-- x-release-please-start-version -->
 
 ```terraform
 module "workloads" {
@@ -101,11 +104,15 @@ module "custom_node_class" {
 }
 ```
 
+<!-- x-release-please-end -->
+
 #### IAM role for CI/CD pipelines
 
 A submodule is provided that creates an IAM policy for CI/CD pipelines that
 need to deploy and manage the EKS clusters. This policy can be attached to an
 IAM role created by another module, such as [unfunco/oidc-github], for example:
+
+<!-- x-release-please-start-version -->
 
 ```terraform
 module "eks_deployer_iam_policy" {
@@ -125,6 +132,8 @@ module "oidc_github" {
   }
 }
 ```
+
+<!-- x-release-please-end -->
 
 <!-- BEGIN_TF_DOCS -->
 

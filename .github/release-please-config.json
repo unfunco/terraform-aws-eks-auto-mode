@@ -22,14 +22,12 @@
       "draft": false,
       "extra-files": [
         {
-          "glob": false,
           "path": "README.md",
           "type": "generic"
         }
       ],
       "extra-label": "automata 🤖,autorelease: pending,chore 🧹",
       "include-v-in-tag": true,
-      "initial-version": "1.8.0",
       "prerelease": false,
       "pull-request-header": "🤖 I have created a release",
       "pull-request-title-pattern": "chore: Release v${version}",
