@@ -12,8 +12,9 @@ using [Amazon EKS Auto Mode].
 ### Requirements
 
 - [AWS Command Line Interface] 2+
-- [Terraform] 1.13+
+- [Terraform] 1.14+
 - [Terraform AWS provider] 6.0+
+- [Terraform Kubernetes provider] 3.0+
 
 ### Installation and usage
 
@@ -203,4 +204,5 @@ Made available under the terms of the [MIT License].
 [release please]: https://github.com/googleapis/release-please
 [terraform]: https://www.terraform.io
 [terraform aws provider]: https://registry.terraform.io/providers/hashicorp/aws
+[terraform kubernetes provider]: https://registry.terraform.io/providers/hashicorp/kubernetes
 [unfunco/oidc-github]: https://registry.terraform.io/modules/unfunco/oidc-github/aws/latest
