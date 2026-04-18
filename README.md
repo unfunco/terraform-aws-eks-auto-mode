@@ -129,9 +129,9 @@ module "eks_deployer_iam_policy" {
 ```terraform
 module "oidc_github" {
   source  = "unfunco/oidc-github/aws"
-  version = "2.0.2"
+  version = "3.0.0"
 
-  github_repositories = ["unfunco/example"]
+  github_subjects = ["unfunco/example"]
   iam_role_inline_policies = {
     eks = module.eks_deployer_iam_policy.policy_document.json
   }
