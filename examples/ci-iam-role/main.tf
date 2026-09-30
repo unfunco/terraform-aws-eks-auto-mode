@@ -11,7 +11,7 @@ module "workloads_deployer_iam_policy" {
 
 module "oidc_github" {
   source  = "unfunco/oidc-github/aws"
-  version = "3.0.0"
+  version = "3.1.0"
 
   github_subjects = ["unfunco/terraform-aws-eks-auto-mode"]
   iam_role_inline_policies = {
