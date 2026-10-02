@@ -6,10 +6,10 @@
 
 | Name                                                                                                                               | Type        |
 | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)         | data source |
-| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition)                     | data source |
-| [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region)                           | data source |
+| [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/data-sources/caller_identity)         | data source |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/data-sources/partition)                     | data source |
+| [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/data-sources/region)                           | data source |
 
 ### Inputs
 
