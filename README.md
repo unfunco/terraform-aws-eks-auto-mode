@@ -13,7 +13,7 @@ using [Amazon EKS Auto Mode].
 
 - [AWS Command Line Interface] 2+
 - [Terraform] 1.14+
-- [Terraform AWS provider] 6.0+
+- [Terraform AWS provider] 6.67.0+
 - [Terraform Kubernetes provider] 3.0+
 
 ### Installation and usage

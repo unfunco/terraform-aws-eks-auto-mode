@@ -6,10 +6,10 @@
 
 | Name                                                                                                                                                | Type        |
 | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_eks_access_entry.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_access_entry)                           | resource    |
-| [aws_eks_access_policy_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_access_policy_association) | resource    |
+| [aws_eks_access_entry.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/resources/eks_access_entry)                           | resource    |
+| [aws_eks_access_policy_association.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/resources/eks_access_policy_association) | resource    |
 | [kubernetes_manifest.node_class](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest)                       | resource    |
-| [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition)                                      | data source |
+| [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/6.67.0/docs/data-sources/partition)                                      | data source |
 
 ### Inputs
 
