@@ -14,6 +14,20 @@ mock_provider "aws" {
       partition  = "aws"
     }
   }
+
+  mock_resource "aws_eks_cluster" {
+    defaults = {
+      certificate_authority = [{ data = "bW9jaw==" }]
+      endpoint              = "https://mock.gr7.eu-west-2.eks.amazonaws.com"
+      identity              = [{ oidc = [{ issuer = "https://oidc.eks.eu-west-2.amazonaws.com/id/MOCK" }] }]
+    }
+  }
+
+  mock_resource "aws_iam_role" {
+    defaults = {
+      arn = "arn:aws:iam::123456789012:role/mock"
+    }
+  }
 }
 
 variables {
@@ -94,5 +108,39 @@ run "names_the_log_group_after_the_cluster" {
   assert {
     condition     = aws_cloudwatch_log_group.this.skip_destroy
     error_message = "Control plane logs must outlive the cluster unless force_destroy is set."
+  }
+}
+
+run "exposes_what_a_kubernetes_client_needs" {
+  command = apply
+
+  assert {
+    condition     = output.cluster_endpoint == "https://mock.gr7.eu-west-2.eks.amazonaws.com"
+    error_message = "cluster_endpoint must be the API server endpoint."
+  }
+
+  assert {
+    condition     = output.cluster_certificate_authority_data == "bW9jaw=="
+    error_message = "cluster_certificate_authority_data must be the cluster's CA data."
+  }
+
+  assert {
+    condition     = output.cluster_oidc_issuer_url == "https://oidc.eks.eu-west-2.amazonaws.com/id/MOCK"
+    error_message = "cluster_oidc_issuer_url must be the OIDC issuer."
+  }
+
+  assert {
+    condition     = output.cluster_name == "workloads"
+    error_message = "cluster_name must be the cluster's name."
+  }
+
+  assert {
+    condition     = output.log_group_name == "/aws/eks/workloads/cluster"
+    error_message = "log_group_name must be the control plane log group."
+  }
+
+  assert {
+    condition     = output.node_role_name == "workloads-node-role"
+    error_message = "node_role_name must be the node role's name."
   }
 }

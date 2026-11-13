@@ -31,8 +31,28 @@ module "workloads" {
 
 <!-- x-release-please-end -->
 
+The identity that creates the cluster is made a cluster administrator, so it
+can connect straight away:
+
 ```bash
 aws eks update-kubeconfig --name workloads
+```
+
+The outputs carry everything the [Terraform Kubernetes provider] or the
+[Terraform Helm provider] need to deploy to the cluster from the same
+configuration:
+
+```terraform
+provider "kubernetes" {
+  cluster_ca_certificate = base64decode(module.workloads.cluster_certificate_authority_data)
+  host                   = module.workloads.cluster_endpoint
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1"
+    args        = ["eks", "get-token", "--cluster-name", module.workloads.cluster_name]
+    command     = "aws"
+  }
+}
 ```
 
 This is what the cluster looks like once created:
@@ -126,12 +146,19 @@ module "oidc_github" {
 
 ### Outputs
 
-| Name             | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| cluster_arn      | ARN of the EKS cluster.                              |
-| cluster_name     | Name of the EKS cluster.                             |
-| cluster_role_arn | ARN of the IAM role associated with the EKS cluster. |
-| node_role_arn    | ARN of the IAM role associated with the EKS nodes.   |
+| Name                               | Description                                                         |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| cluster_arn                        | ARN of the EKS cluster.                                             |
+| cluster_certificate_authority_data | Base64-encoded certificate authority data for the cluster.          |
+| cluster_endpoint                   | Endpoint of the Kubernetes API server.                              |
+| cluster_name                       | Name of the EKS cluster.                                            |
+| cluster_oidc_issuer_url            | Issuer URL of the cluster's OpenID Connect identity provider.       |
+| cluster_role_arn                   | ARN of the IAM role associated with the EKS cluster.                |
+| cluster_security_group_id          | ID of the security group EKS creates for the cluster and its nodes. |
+| cluster_version                    | Kubernetes version of the EKS cluster.                              |
+| log_group_name                     | Name of the CloudWatch log group that holds the control plane logs. |
+| node_role_arn                      | ARN of the IAM role associated with the EKS nodes.                  |
+| node_role_name                     | Name of the IAM role associated with the EKS nodes.                 |
 
 <!-- END_TF_DOCS -->
 
@@ -155,4 +182,6 @@ Made available under the terms of the [MIT License].
 [release please]: https://github.com/googleapis/release-please
 [terraform]: https://www.terraform.io
 [terraform aws provider]: https://registry.terraform.io/providers/hashicorp/aws
+[terraform helm provider]: https://registry.terraform.io/providers/hashicorp/helm
+[terraform kubernetes provider]: https://registry.terraform.io/providers/hashicorp/kubernetes
 [unfunco/oidc-github]: https://registry.terraform.io/modules/unfunco/oidc-github/aws/latest
