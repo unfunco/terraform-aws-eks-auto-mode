@@ -14,7 +14,6 @@ using [Amazon EKS Auto Mode].
 - [AWS Command Line Interface] 2+
 - [Terraform] 1.14+
 - [Terraform AWS provider] 6.67.0+
-- [Terraform Kubernetes provider] 3.0+
 
 ### Installation and usage
 
@@ -61,51 +60,6 @@ kube-system       extension-apiserver-authentication                     6      
 kube-system       kube-apiserver-legacy-service-account-token-tracking   1      9m38s
 kube-system       kube-root-ca.crt                                       1      9m25s
 ```
-
-#### Custom node classes
-
-<!-- x-release-please-start-version -->
-
-```terraform
-module "workloads" {
-  source  = "unfunco/eks-auto-mode/aws"
-  version = "0.0.0"
-
-  cluster_name = "workloads"
-  subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
-}
-
-module "custom_node_class" {
-  source  = "unfunco/eks-auto-mode/aws//modules/node-class"
-  version = "0.0.0"
-
-  cluster_name = module.workloads.cluster_name
-  name         = "custom-node-class"
-  role         = module.workloads.node_role_arn
-
-  subnet_selector_terms = [
-    {
-      tags = {
-        "kubernetes.io/role/internal-elb" = "1"
-      }
-    }
-  ]
-
-  security_group_selector_terms = [
-    {
-      tags = {
-        "aws:eks:cluster-name" = module.workloads.cluster_name
-      }
-    }
-  ]
-
-  ephemeral_storage = {
-    size = "100Gi"
-  }
-}
-```
-
-<!-- x-release-please-end -->
 
 #### IAM role for CI/CD pipelines
 
@@ -204,5 +158,4 @@ Made available under the terms of the [MIT License].
 [release please]: https://github.com/googleapis/release-please
 [terraform]: https://www.terraform.io
 [terraform aws provider]: https://registry.terraform.io/providers/hashicorp/aws
-[terraform kubernetes provider]: https://registry.terraform.io/providers/hashicorp/kubernetes
 [unfunco/oidc-github]: https://registry.terraform.io/modules/unfunco/oidc-github/aws/latest
