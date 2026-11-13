@@ -26,19 +26,19 @@ variable "force_destroy" {
 
 variable "kms_key_arn" {
   default     = null
-  description = ""
+  description = "ARN of the KMS key that encrypts Kubernetes secrets and control plane logs, unless a more specific key is given."
   type        = string
 }
 
 variable "kms_key_arn_cluster" {
   default     = null
-  description = "ARN of the KMS key to use cluster encryption."
+  description = "ARN of the KMS key that encrypts Kubernetes secrets, in place of kms_key_arn."
   type        = string
 }
 
 variable "kms_key_arn_log_group" {
   default     = null
-  description = "ARN of the KMS key to use for log group encryption."
+  description = "ARN of the KMS key that encrypts control plane logs, in place of kms_key_arn."
   type        = string
 }
 
