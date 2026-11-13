@@ -23,11 +23,11 @@ settings:
   color: false
   default: true
   description: false
-  escape: true
+  escape: false
   hide-empty: true
   html: false
   indent: 3
-  lockfile: true
+  lockfile: false
   read-comments: true
   required: true
   sensitive: true
