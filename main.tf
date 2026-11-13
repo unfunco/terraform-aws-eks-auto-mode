@@ -28,6 +28,15 @@ resource "aws_cloudwatch_log_group" "this" {
 }
 
 resource "aws_eks_cluster" "this" {
+  # EKS creates the log group itself, without encryption or retention, when
+  # it does not already exist, and it needs the role policies both to create
+  # the cluster's infrastructure and to clean it up again on destroy.
+  depends_on = [
+    aws_cloudwatch_log_group.this,
+    aws_iam_role_policy_attachment.cluster,
+    aws_iam_role_policy_attachment.node,
+  ]
+
   bootstrap_self_managed_addons = false
   enabled_cluster_log_types     = var.cluster_log_types
   name                          = var.cluster_name
