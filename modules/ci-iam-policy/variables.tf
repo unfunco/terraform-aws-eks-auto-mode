@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
-// SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
+# SPDX-License-Identifier: MIT
 
 variable "cluster_name" {
   description = "Name of the EKS cluster the pipeline deploys, as passed to the root module."
