@@ -83,9 +83,11 @@ kube-system       kube-root-ca.crt                                       1      
 
 #### IAM role for CI/CD pipelines
 
-A submodule is provided that creates an IAM policy for CI/CD pipelines that
-need to deploy and manage the EKS clusters. This policy can be attached to an
-IAM role created by another module, such as [unfunco/oidc-github], for example:
+A submodule is provided that writes an IAM policy for CI/CD pipelines that
+deploy and manage a cluster with this module. It covers the cluster, its two
+IAM roles and its log group, and nothing else, so the pipeline also needs
+access to wherever its Terraform state is kept. The policy can be attached to
+an IAM role created by another module, such as [unfunco/oidc-github]:
 
 <!-- x-release-please-start-version -->
 
@@ -107,7 +109,7 @@ module "oidc_github" {
 
   github_subjects = ["unfunco/example"]
   iam_role_inline_policies = {
-    eks = module.eks_deployer_iam_policy.policy_document.json
+    eks = module.eks_deployer_iam_policy.json
   }
 }
 ```

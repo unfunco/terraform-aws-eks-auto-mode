@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Daniel Morris <daniel@honestempire.com>
 // SPDX-License-Identifier: MIT
 
-output "policy_document" {
-  description = "IAM policy document granting least-privilege permissions to deploy this module."
-  value       = data.aws_iam_policy_document.this
+output "json" {
+  description = "IAM policy document, as JSON, that grants the permissions needed to deploy the root module."
+  value       = data.aws_iam_policy_document.this.json
 }

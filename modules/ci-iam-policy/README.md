@@ -13,14 +13,15 @@
 
 ### Inputs
 
-| Name         | Description   | Type     | Default | Required |
-| ------------ | ------------- | -------- | ------- | :------: |
-| cluster_name | Cluster name. | `string` | n/a     |   yes    |
+| Name         | Description                                                                                                       | Type          | Default | Required |
+| ------------ | ----------------------------------------------------------------------------------------------------------------- | ------------- | ------- | :------: |
+| cluster_name | Name of the EKS cluster the pipeline deploys, as passed to the root module.                                       | `string`      | n/a     |   yes    |
+| kms_key_arns | ARNs of the KMS keys passed to the root module, which the pipeline must be able to describe and create grants on. | `set(string)` | `[]`    |    no    |
 
 ### Outputs
 
-| Name            | Description                                                                     |
-| --------------- | ------------------------------------------------------------------------------- |
-| policy_document | IAM policy document granting least-privilege permissions to deploy this module. |
+| Name | Description                                                                                 |
+| ---- | ------------------------------------------------------------------------------------------- |
+| json | IAM policy document, as JSON, that grants the permissions needed to deploy the root module. |
 
 <!-- END_TF_DOCS -->
