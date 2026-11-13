@@ -18,12 +18,6 @@ variable "cluster_version" {
   type        = string
 }
 
-variable "create" {
-  default     = true
-  description = "Enable/disable the creation of all resources."
-  type        = bool
-}
-
 variable "force_destroy" {
   default     = false
   description = "Force destroy resources."

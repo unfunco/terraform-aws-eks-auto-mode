@@ -2,19 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 locals {
-  cluster_arn = format(
-    "arn:%s:eks:%s:%s:cluster/%s",
-    data.aws_partition.this[0].partition,
-    data.aws_region.this[0].region,
-    data.aws_caller_identity.this[0].account_id,
-    var.cluster_name,
-  )
+  account_id = data.aws_caller_identity.this.account_id
+  partition  = data.aws_partition.this.partition
+  region     = data.aws_region.this.region
 
-  log_group_arn = format(
-    "arn:%s:logs:%s:%s:log-group:/aws/eks/%s/cluster*",
-    data.aws_partition.this[0].partition,
-    data.aws_region.this[0].region,
-    data.aws_caller_identity.this[0].account_id,
-    var.cluster_name,
-  )
+  cluster_arn   = "arn:${local.partition}:eks:${local.region}:${local.account_id}:cluster/${var.cluster_name}"
+  log_group_arn = "arn:${local.partition}:logs:${local.region}:${local.account_id}:log-group:/aws/eks/${var.cluster_name}/cluster*"
 }

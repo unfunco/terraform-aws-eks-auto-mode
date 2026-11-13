@@ -104,11 +104,9 @@ module "oidc_github" {
 | [aws_iam_role.node](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                        | resource    |
 | [aws_iam_role_policy_attachment.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource    |
 | [aws_iam_role_policy_attachment.node](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment)    | resource    |
-| [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)                       | data source |
 | [aws_iam_policy_document.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document)            | data source |
 | [aws_iam_policy_document.node](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document)               | data source |
 | [aws_partition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition)                                   | data source |
-| [aws_region.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region)                                         | data source |
 
 ### Inputs
 
@@ -117,7 +115,6 @@ module "oidc_github" {
 | cluster_log_types     | Control plane logging types to enable.              | `list(string)` | `[ "api", "audit", "authenticator", "controllerManager", "scheduler" ]` |    no    |
 | cluster_name          | Kubernetes cluster name.                            | `string`       | n/a                                                                     |   yes    |
 | cluster_version       | Kubernetes cluster version.                         | `string`       | `"1.34"`                                                                |    no    |
-| create                | Enable/disable the creation of all resources.       | `bool`         | `true`                                                                  |    no    |
 | force_destroy         | Force destroy resources.                            | `bool`         | `false`                                                                 |    no    |
 | kms_key_arn           | n/a                                                 | `string`       | `null`                                                                  |    no    |
 | kms_key_arn_cluster   | ARN of the KMS key to use cluster encryption.       | `string`       | `null`                                                                  |    no    |
