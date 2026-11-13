@@ -15,7 +15,19 @@ on:
 jobs:
   verify:
     name: Verify
+    strategy:
+      fail-fast: false
+      matrix:
+        working-directory:
+        - .
+        - modules/ci-iam-policy
+        - examples/basic
+        - examples/ci-iam-role
     uses: unfunco/meta/.github/workflows/verify-terraform.yaml@b40ef8e1b220c86892199cb32e2d65d392e74e34 # v0.4.1
+    with:
+      run-tests: true
+      terraform-version-file: .terraform-version
+      working-directory: ${{ matrix.working-directory }}
 
   release:
     name: Release?
