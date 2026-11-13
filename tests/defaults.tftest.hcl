@@ -25,32 +25,32 @@ run "creates_an_auto_mode_cluster" {
   command = plan
 
   assert {
-    condition     = aws_eks_cluster.this[0].name == "workloads"
+    condition     = aws_eks_cluster.this.name == "workloads"
     error_message = "The cluster must take its name from cluster_name."
   }
 
   assert {
-    condition     = aws_eks_cluster.this[0].bootstrap_self_managed_addons == false
+    condition     = aws_eks_cluster.this.bootstrap_self_managed_addons == false
     error_message = "Auto Mode clusters must not bootstrap self-managed add-ons."
   }
 
   assert {
-    condition     = aws_eks_cluster.this[0].compute_config[0].enabled
+    condition     = aws_eks_cluster.this.compute_config[0].enabled
     error_message = "Auto Mode compute must be enabled."
   }
 
   assert {
-    condition     = aws_eks_cluster.this[0].kubernetes_network_config[0].elastic_load_balancing[0].enabled
+    condition     = aws_eks_cluster.this.kubernetes_network_config[0].elastic_load_balancing[0].enabled
     error_message = "Auto Mode load balancing must be enabled."
   }
 
   assert {
-    condition     = aws_eks_cluster.this[0].storage_config[0].block_storage[0].enabled
+    condition     = aws_eks_cluster.this.storage_config[0].block_storage[0].enabled
     error_message = "Auto Mode block storage must be enabled."
   }
 
   assert {
-    condition     = aws_eks_cluster.this[0].access_config[0].authentication_mode == "API"
+    condition     = aws_eks_cluster.this.access_config[0].authentication_mode == "API"
     error_message = "The cluster must authenticate with access entries only."
   }
 }
@@ -87,12 +87,12 @@ run "names_the_log_group_after_the_cluster" {
   command = plan
 
   assert {
-    condition     = aws_cloudwatch_log_group.this[0].name == "/aws/eks/workloads/cluster"
+    condition     = aws_cloudwatch_log_group.this.name == "/aws/eks/workloads/cluster"
     error_message = "EKS only writes control plane logs to /aws/eks/<cluster>/cluster."
   }
 
   assert {
-    condition     = aws_cloudwatch_log_group.this[0].skip_destroy
+    condition     = aws_cloudwatch_log_group.this.skip_destroy
     error_message = "Control plane logs must outlive the cluster unless force_destroy is set."
   }
 }

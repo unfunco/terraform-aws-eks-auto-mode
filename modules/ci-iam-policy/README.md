@@ -13,10 +13,9 @@
 
 ### Inputs
 
-| Name         | Description                                   | Type     | Default | Required |
-| ------------ | --------------------------------------------- | -------- | ------- | :------: |
-| cluster_name | Cluster name.                                 | `string` | n/a     |   yes    |
-| create       | Enable/disable the creation of all resources. | `bool`   | `true`  |    no    |
+| Name         | Description   | Type     | Default | Required |
+| ------------ | ------------- | -------- | ------- | :------: |
+| cluster_name | Cluster name. | `string` | n/a     |   yes    |
 
 ### Outputs
 

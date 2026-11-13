@@ -2,44 +2,37 @@
 // SPDX-License-Identifier: MIT
 
 locals {
-  default_cluster_role_policy_attachments = [
+  cluster_role_policies = toset([
     "AmazonEKSBlockStoragePolicy",
     "AmazonEKSClusterPolicy",
     "AmazonEKSComputePolicy",
     "AmazonEKSLoadBalancingPolicy",
     "AmazonEKSNetworkingPolicy",
-  ]
+  ])
 
-  default_node_role_policy_attachments = [
+  node_role_policies = toset([
     "AmazonEC2ContainerRegistryPullOnly",
     "AmazonEKSWorkerNodeMinimalPolicy",
-  ]
-
-  default_tags = merge({}, var.tags)
+  ])
 
   enable_cluster_kms = var.kms_key_arn != null && var.kms_key_arn_cluster != null
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  count = var.create ? 1 : 0
-
   kms_key_id        = var.kms_key_arn_log_group != null ? var.kms_key_arn_log_group : var.kms_key_arn
   log_group_class   = var.log_group_class
-  name              = format("/aws/eks/%s/cluster", var.cluster_name)
+  name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.log_retention_in_days
   skip_destroy      = !var.force_destroy
-  tags              = local.default_tags
+  tags              = var.tags
 }
 
 resource "aws_eks_cluster" "this" {
-  count = var.create ? 1 : 0
-
   bootstrap_self_managed_addons = false
   enabled_cluster_log_types     = var.cluster_log_types
-  force_update_version          = false
   name                          = var.cluster_name
-  role_arn                      = aws_iam_role.cluster[0].arn
-  tags                          = local.default_tags
+  role_arn                      = aws_iam_role.cluster.arn
+  tags                          = var.tags
   version                       = var.cluster_version
 
   access_config {
@@ -50,7 +43,7 @@ resource "aws_eks_cluster" "this" {
   compute_config {
     enabled       = true
     node_pools    = ["general-purpose"]
-    node_role_arn = aws_iam_role.node[0].arn
+    node_role_arn = aws_iam_role.node.arn
   }
 
   dynamic "encryption_config" {
@@ -83,35 +76,31 @@ resource "aws_eks_cluster" "this" {
 }
 
 resource "aws_iam_role" "cluster" {
-  count = var.create ? 1 : 0
-
-  assume_role_policy    = data.aws_iam_policy_document.cluster[0].json
+  assume_role_policy    = data.aws_iam_policy_document.cluster.json
   description           = "Assumed by EKS to manage clusters."
   force_detach_policies = var.force_destroy
-  name                  = format("%s-cluster-role", var.cluster_name)
-  tags                  = local.default_tags
+  name                  = "${var.cluster_name}-cluster-role"
+  tags                  = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cluster" {
-  for_each = var.create ? toset(local.default_cluster_role_policy_attachments) : []
+  for_each = local.cluster_role_policies
 
-  policy_arn = format("arn:%s:iam::aws:policy/%s", data.aws_partition.this[0].partition, each.key)
-  role       = aws_iam_role.cluster[0].name
+  policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/${each.key}"
+  role       = aws_iam_role.cluster.name
 }
 
 resource "aws_iam_role" "node" {
-  count = var.create ? 1 : 0
-
-  assume_role_policy    = data.aws_iam_policy_document.node[0].json
+  assume_role_policy    = data.aws_iam_policy_document.node.json
   description           = "Assumed by EC2 instances to join EKS clusters."
   force_detach_policies = var.force_destroy
-  name                  = format("%s-node-role", var.cluster_name)
-  tags                  = local.default_tags
+  name                  = "${var.cluster_name}-node-role"
+  tags                  = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "node" {
-  for_each = var.create ? toset(local.default_node_role_policy_attachments) : []
+  for_each = local.node_role_policies
 
-  policy_arn = format("arn:%s:iam::aws:policy/%s", data.aws_partition.this[0].partition, each.key)
-  role       = aws_iam_role.node[0].name
+  policy_arn = "arn:${data.aws_partition.this.partition}:iam::aws:policy/${each.key}"
+  role       = aws_iam_role.node.name
 }
