@@ -52,7 +52,7 @@ resource "aws_eks_cluster" "this" {
 
   compute_config {
     enabled       = true
-    node_pools    = ["general-purpose"]
+    node_pools    = var.node_pools
     node_role_arn = aws_iam_role.node.arn
   }
 
@@ -81,7 +81,10 @@ resource "aws_eks_cluster" "this" {
   }
 
   vpc_config {
-    subnet_ids = var.subnet_ids
+    endpoint_private_access = true
+    endpoint_public_access  = length(var.endpoint_public_access_cidrs) > 0
+    public_access_cidrs     = length(var.endpoint_public_access_cidrs) > 0 ? var.endpoint_public_access_cidrs : null
+    subnet_ids              = var.subnet_ids
   }
 }
 
