@@ -9,7 +9,7 @@ provider "aws" {
 
 module "network" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "6.5.1"
+  version = "6.7.3"
 
   azs                = slice(data.aws_availability_zones.these.names, 0, 2)
   cidr               = "10.0.0.0/16"

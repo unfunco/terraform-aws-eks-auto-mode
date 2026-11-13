@@ -91,7 +91,7 @@ IAM role created by another module, such as [unfunco/oidc-github], for example:
 
 ```terraform
 module "eks_deployer_iam_policy" {
-  source = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
+  source  = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
   version = "0.0.0"
 
   cluster_name = "workloads"
@@ -103,7 +103,7 @@ module "eks_deployer_iam_policy" {
 ```terraform
 module "oidc_github" {
   source  = "unfunco/oidc-github/aws"
-  version = "3.0.0"
+  version = "3.1.0"
 
   github_subjects = ["unfunco/example"]
   iam_role_inline_policies = {
