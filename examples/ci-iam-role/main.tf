@@ -15,6 +15,6 @@ module "oidc_github" {
 
   github_subjects = ["unfunco/terraform-aws-eks-auto-mode"]
   iam_role_inline_policies = {
-    eks = module.workloads_deployer_iam_policy.policy_document.json
+    eks = module.workloads_deployer_iam_policy.json
   }
 }
