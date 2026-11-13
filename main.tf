@@ -15,11 +15,12 @@ locals {
     "AmazonEKSWorkerNodeMinimalPolicy",
   ])
 
-  enable_cluster_kms = var.kms_key_arn != null && var.kms_key_arn_cluster != null
+  kms_key_arn_cluster   = var.kms_key_arn_cluster != null ? var.kms_key_arn_cluster : var.kms_key_arn
+  kms_key_arn_log_group = var.kms_key_arn_log_group != null ? var.kms_key_arn_log_group : var.kms_key_arn
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  kms_key_id        = var.kms_key_arn_log_group != null ? var.kms_key_arn_log_group : var.kms_key_arn
+  kms_key_id        = local.kms_key_arn_log_group
   log_group_class   = var.log_group_class
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.log_retention_in_days
@@ -56,13 +57,13 @@ resource "aws_eks_cluster" "this" {
   }
 
   dynamic "encryption_config" {
-    for_each = local.enable_cluster_kms ? { enabled = true } : {}
+    for_each = local.kms_key_arn_cluster[*]
 
     content {
-      resources = ["logs"]
+      resources = ["secrets"]
 
       provider {
-        key_arn = coalesce(var.kms_key_arn_log_group, var.kms_key_arn)
+        key_arn = encryption_config.value
       }
     }
   }

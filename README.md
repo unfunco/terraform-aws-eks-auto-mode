@@ -110,19 +110,19 @@ module "oidc_github" {
 
 ### Inputs
 
-| Name                  | Description                                         | Type           | Default                                                                 | Required |
-| --------------------- | --------------------------------------------------- | -------------- | ----------------------------------------------------------------------- | :------: |
-| cluster_log_types     | Control plane logging types to enable.              | `list(string)` | `[ "api", "audit", "authenticator", "controllerManager", "scheduler" ]` |    no    |
-| cluster_name          | Kubernetes cluster name.                            | `string`       | n/a                                                                     |   yes    |
-| cluster_version       | Kubernetes cluster version.                         | `string`       | `"1.34"`                                                                |    no    |
-| force_destroy         | Force destroy resources.                            | `bool`         | `false`                                                                 |    no    |
-| kms_key_arn           | n/a                                                 | `string`       | `null`                                                                  |    no    |
-| kms_key_arn_cluster   | ARN of the KMS key to use cluster encryption.       | `string`       | `null`                                                                  |    no    |
-| kms_key_arn_log_group | ARN of the KMS key to use for log group encryption. | `string`       | `null`                                                                  |    no    |
-| log_group_class       | Log group storage class.                            | `string`       | `"STANDARD"`                                                            |    no    |
-| log_retention_in_days | Days to retain logs in CloudWatch Logs.             | `number`       | `365`                                                                   |    no    |
-| subnet_ids            | Subnet IDs for the EKS cluster.                     | `list(string)` | n/a                                                                     |   yes    |
-| tags                  | Tags to be applied to all applicable resources.     | `map(string)`  | `{}`                                                                    |    no    |
+| Name                  | Description                                                                                                      | Type           | Default                                                                 | Required |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------- | ----------------------------------------------------------------------- | :------: |
+| cluster_log_types     | Control plane logging types to enable.                                                                           | `list(string)` | `[ "api", "audit", "authenticator", "controllerManager", "scheduler" ]` |    no    |
+| cluster_name          | Kubernetes cluster name.                                                                                         | `string`       | n/a                                                                     |   yes    |
+| cluster_version       | Kubernetes cluster version.                                                                                      | `string`       | `"1.34"`                                                                |    no    |
+| force_destroy         | Force destroy resources.                                                                                         | `bool`         | `false`                                                                 |    no    |
+| kms_key_arn           | ARN of the KMS key that encrypts Kubernetes secrets and control plane logs, unless a more specific key is given. | `string`       | `null`                                                                  |    no    |
+| kms_key_arn_cluster   | ARN of the KMS key that encrypts Kubernetes secrets, in place of kms_key_arn.                                    | `string`       | `null`                                                                  |    no    |
+| kms_key_arn_log_group | ARN of the KMS key that encrypts control plane logs, in place of kms_key_arn.                                    | `string`       | `null`                                                                  |    no    |
+| log_group_class       | Log group storage class.                                                                                         | `string`       | `"STANDARD"`                                                            |    no    |
+| log_retention_in_days | Days to retain logs in CloudWatch Logs.                                                                          | `number`       | `365`                                                                   |    no    |
+| subnet_ids            | Subnet IDs for the EKS cluster.                                                                                  | `list(string)` | n/a                                                                     |   yes    |
+| tags                  | Tags to be applied to all applicable resources.                                                                  | `map(string)`  | `{}`                                                                    |    no    |
 
 ### Outputs
 
