@@ -22,7 +22,7 @@ using [Amazon EKS Auto Mode].
 ```terraform
 module "workloads" {
   source  = "unfunco/eks-auto-mode/aws"
-  version = "0.0.0"
+  version = "0.1.0"
 
   cluster_name = "workloads"
   subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
@@ -94,7 +94,7 @@ an IAM role created by another module, such as [unfunco/oidc-github]:
 ```terraform
 module "eks_deployer_iam_policy" {
   source  = "unfunco/eks-auto-mode/aws//modules/ci-iam-policy"
-  version = "0.0.0"
+  version = "0.1.0"
 
   cluster_name = "workloads"
 }
