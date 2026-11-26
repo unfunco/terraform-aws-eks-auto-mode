@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/unfunco/terraform-aws-eks-auto-mode/compare/v0.1.0...v0.1.1) (2026-11-26)
+
+
+### 🧹 Miscellaneous
+
+* Standardise changelog emoji sections ([#46](https://github.com/unfunco/terraform-aws-eks-auto-mode/issues/46)) ([10de29a](https://github.com/unfunco/terraform-aws-eks-auto-mode/commit/10de29ad8339ad5867ec6e8b244cfefe2b76130a))
+
 ## 0.1.0 (2026-11-14)
 
 
